@@ -1,9 +1,7 @@
 // @todo: Темплейт карточки
-
 const cardTemplate = document.querySelector('#card-template').content.querySelector('.card')
 
 // @todo: DOM узлы
-
 const cardsContainer = document.querySelector('.places__list');
 const addButton = document.querySelector('.profile__add-button');
 const popupNewCard = document.querySelector('.popup_type_new-card');
@@ -13,8 +11,7 @@ const popupEdit = document.querySelector('.popup_type_edit');
 const formEditProfile = popupEdit.querySelector('.popup__form');
 
 // @todo: Функция создания карточки
-
-function createCard(cardData) {
+function createCard(cardData, deleteCard) {
   const cardElement = cardTemplate.cloneNode(true)
 
   const cardImage = cardElement.querySelector('.card__image')
@@ -25,23 +22,21 @@ function createCard(cardData) {
   cardImage.alt = cardData.name
   cardTitle.textContent = cardData.name
 
-  deleteButton.addEventListener('click', removeCard)
+  deleteButton.addEventListener('click', deleteCard)
 
   return cardElement
 }
 
 // @todo: Функция удаления карточки
-
 function removeCard(e) {
   const cardElement = e.target.closest('.card')
   cardElement.remove()
 }
 
 // @todo: Вывести карточки на страницу
-
 function showCard(initialCards) {
   initialCards.forEach((cardData) => {
-    const cardElement = createCard(cardData)
+    const cardElement = createCard(cardData, removeCard) // Передаем removeCard как параметр
 
     cardsContainer.append(cardElement)
   })
@@ -78,16 +73,10 @@ formNewCard.addEventListener('submit', (e) => {
     link: link
   };
 
-  const cardElement = createCard(newCardData);
+  const cardElement = createCard(newCardData, removeCard); // Передаем removeCard как параметр
   cardsContainer.append(cardElement);
   closePopup(popupNewCard);
   formNewCard.reset(); // Сброс формы
 });
 
-// Пример начальных карточек
-// const initialCards = [
-//   { name: 'Карточка 1', link: 'https://example.com/image1.jpg' },
-//   { name: 'Карточка 2', link: 'https://example.com/image2.jpg' }
-// ];
-
-showCard(initialCards);//
+showCard(initialCards);
