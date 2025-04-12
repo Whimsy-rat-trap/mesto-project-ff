@@ -5,7 +5,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   entry: {
-    main: './src/index.js'
+    //main: './src/index.js'
+    main: './src/scripts/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -13,11 +14,14 @@ module.exports = {
     publicPath: '',
   },
   mode: 'development',
+  optimization: {
+    minimize: false, // Отключаем минификацию
+  },
   devServer: {
     static: path.resolve(__dirname, './dist'),
     open: true,
     compress: true,
-    port: 8080
+    port: 8081 //8080
   },
   module: {
     rules: [{
@@ -30,11 +34,13 @@ module.exports = {
         type: 'asset/resource',
       },
       {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, {
+        test: /\.css$/, // Обработка CSS файлов
+        use: [
+          MiniCssExtractPlugin.loader, 
+          {
             loader: 'css-loader',
             options: {
-              importLoaders: 1
+              importLoaders: 1,
             }
           },
           'postcss-loader'
@@ -47,7 +53,9 @@ module.exports = {
       template: './src/index.html'
     }),
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'styles.css', // Имя итогового CSS файла
+    }),
 
   ]
 }
