@@ -16,7 +16,7 @@
   <!--Profile edit -->
   <main class="content">
     <section class="profile page__section">
-      <div class="profile__image" style="background-image: url('./images/avatar.jpg');"></div>
+      <div class="profile__image"></div>
       <div class="profile__info">
         <h1 class="profile__title"></h1><!--Жак-Ив Кусто-->
         <button class="profile__edit-button" type="button"></button>
@@ -64,8 +64,6 @@
     </div>
   </div>
 </div>
-<script src="./scripts/cards.js"></script>
-<script src="./scripts/index.js" defer></script>
 
 <template id="card-template">
   <li class="places__item card">
@@ -78,5 +76,11 @@
     </div>
   </li>
 </template>
+
+<script src="main.js"></script>
+<script>
+  // Инициализация карточек
+  showCard();
+</script>
 </body>
 </html>

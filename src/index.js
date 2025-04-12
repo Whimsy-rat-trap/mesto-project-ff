@@ -44,7 +44,7 @@ import './blocks/profile/__info/profile__info.css';
 import './blocks/profile/__title/profile__title.css';
 import './pages/index.css'; //the question is whether i need this or not
 import './scripts/cards.js';
-import './scripts/index.js'; //and whether this should be here or in webpack.config.js
+import './scripts/index.js'; //and whether this should be here or in webpack.config
 import './vendor/fonts.css';
 import './vendor/normalize.css';
 
