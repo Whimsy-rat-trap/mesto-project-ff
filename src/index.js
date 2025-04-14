@@ -43,8 +43,8 @@ import './blocks/profile/__image/profile__image.css';
 import './blocks/profile/__info/profile__info.css';
 import './blocks/profile/__title/profile__title.css';
 import './pages/index.css'; //the question is whether i need this or not
-import './scripts/cards.js';
-import * as functions from './scripts/index.js'; //and whether this should be here or in webpack.config
+import * as init from './scripts/init.js';
+import * as cards from './scripts/cards.js';
 import './vendor/fonts.css';
 import './vendor/normalize.css';
 
@@ -56,6 +56,6 @@ const CardsAndImages = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
-    functions.AddHandlers();
-    functions.showCard();
+    init.AddHandlers();
+    cards.showCard();
 });
