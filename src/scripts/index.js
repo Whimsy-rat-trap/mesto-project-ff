@@ -49,11 +49,15 @@ function openEditProfilePopup() {
 }
 
 //Добавления обработчиков
-function AddHandlers() {
+export function AddHandlers() {
     // Обработчик клика на кнопку редактирования профиля
     document.querySelector('.profile__edit-button').addEventListener('click', openEditProfilePopup);
+    GetPopupEdit().classList.add('popup_is-animated'); // Добавляем анимацию после закрытия
+    document.querySelector('.profile__add-button').addEventListener('click', openPopup);
+    GetPopupNewCard().classList.add('popup_is-animated');
+    GetpopupImage().classList.add('popup_is-animated');
     // Прикрепляем обработчик к форме редактирования:
-    GetformEditProfile.addEventListener('submit', handleFormSubmit); 
+    GetformEditProfile().addEventListener('submit', handleFormSubmit);
     
     const closePopupButtons = document.querySelectorAll('.popup__close');
     // Обработчик события для закрытия попапа
@@ -64,7 +68,7 @@ function AddHandlers() {
 
             document.removeEventListener('keydown', handleEscClose);
             
-            if (popup === GetpopupImage) {
+            if (popup === GetpopupImage()) {
                 document.removeEventListener('keydown', handleEscClose);
             } else { 
                 document.addEventListener('keydown', handleEscClose);
@@ -97,8 +101,8 @@ function AddHandlers() {
         evt.preventDefault(); // Отмена стандартной отправки формы
     
         // jobInput и nameInput из свойства value
-        const nameValue = GetnameInput.value;
-        const jobValue = GetjobInput.value;
+        const nameValue = GetnameInput().value;
+        const jobValue = GetjobInput().value;
     
         // Выбираем элементы куда должны быть вставлены значения полей
         const profileTitle = document.querySelector('.profile__title');
@@ -120,7 +124,7 @@ function AddHandlers() {
 
                 document.removeEventListener('keydown', handleEscClose);
 
-                if (popup === GetpopupImage) {
+                if (popup === GetpopupImage()) {
                     document.removeEventListener('keydown', handleEscClose);
                 } else { 
                     document.addEventListener('keydown', handleEscClose);
@@ -151,7 +155,7 @@ function createCard(cardData, deleteCard) {
 
   // Добавляем обработчик клика на изображение
   cardImage.addEventListener('click', (evt) => {
-    openModalForImage(GetpopupImage, evt);
+    openModalForImage(GetpopupImage(), evt);
   });
 
   // Используем переданную функцию для обработки клика на кнопку лайка
@@ -180,7 +184,7 @@ function openModalForImage(element, evt) {
     // Обработчик события для закрытия попапа изображения через крестик
     const closePopupImageButton = document.querySelector('.popup_type_image .popup__close');
     closePopupImageButton.addEventListener('click', () => {
-        closePopup(GetpopupImage);
+        closePopup(GetpopupImage());
     });
 }
 
@@ -239,7 +243,6 @@ function handleEscClose(e) {
 // Открытие попапа для новой карточки
 function openPopup() {
     GetPopupNewCard().classList.add('popup_is-opened');
-    popup.classList.add('popup_is-animated');
     document.addEventListener('keydown', handleEscClose); // Добавляем обработчик
 }
 
@@ -247,16 +250,5 @@ function openPopup() {
 function closePopup(popup) {
     popup.classList.remove('popup_is-opened');
 
-    // Задержка перед добавлением класса анимации
-    //setTimeout(() => {
-    //  popup.classList.add('popup_is-animated'); // Добавляем анимацию после закрытия
-    //  document.removeEventListener('keydown', handleEscClose);
-    //}, 600);
-
-    popup.classList.add('popup_is-animated'); // Добавляем анимацию после закрытия
     document.removeEventListener('keydown', handleEscClose);
-    
-    //if (popup !== popupImage) {
-    //    document.removeEventListener('keydown', handleEscClose);
-    //} !
 }

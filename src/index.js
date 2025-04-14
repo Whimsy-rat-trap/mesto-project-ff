@@ -56,5 +56,6 @@ const CardsAndImages = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
+    functions.AddHandlers();
     functions.showCard();
 });
