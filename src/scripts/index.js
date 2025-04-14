@@ -193,7 +193,7 @@ function removeCard(e) {
 }
 
 // Вывести карточки на страницу
-function showCard() {
+export function showCard() {
     const initialCards = [
         {
           name: "Архыз",
