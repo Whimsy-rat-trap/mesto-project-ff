@@ -1,5 +1,6 @@
-import {openEditProfilePopup, GetPopupEdit, openPopup, GetPopupNewCard } from "./index.js"
-//Добавления обработчиков
+import {GetnameInput, GetjobInput, openEditProfilePopup, GetPopupEdit, openPopup, GetPopupNewCard, GetpopupImage, GetformEditProfile, createCard, removeCard, GetCardsContainer, closePopup, handleEscClose, } from "../scripts/index.js"
+
+//Обработчики
 export function AddHandlers() {
     // Обработчик клика на кнопку редактирования профиля
     document.querySelector('.profile__edit-button').addEventListener('click', openEditProfilePopup);

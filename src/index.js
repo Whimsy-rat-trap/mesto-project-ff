@@ -43,8 +43,8 @@ import './blocks/profile/__image/profile__image.css';
 import './blocks/profile/__info/profile__info.css';
 import './blocks/profile/__title/profile__title.css';
 import './pages/index.css'; //the question is whether i need this or not
-import * as init from './scripts/init.js';
-import * as cards from './scripts/cards.js';
+import * as init from './components/init.js';
+import * as cards from './components/cards.js';
 import './vendor/fonts.css';
 import './vendor/normalize.css';
 

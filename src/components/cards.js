@@ -1,3 +1,4 @@
+import {createCard, removeCard, GetCardsContainer } from "../scripts/index.js"
 // Вывести карточки на страницу
 export function showCard() {
   const initialCards = [

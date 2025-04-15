@@ -1,11 +1,9 @@
-//import { initialCards } from './cards.js';
-
 // @todo: Темплейт карточки
 function GetCardTemplate() {
     return document.querySelector('#card-template').content.querySelector('.card');
 }
 
-function GetCardsContainer() {
+export function GetCardsContainer() {
     return document.querySelector('.places__list');
 }
 
@@ -17,20 +15,20 @@ export function GetPopupEdit() {
     return document.querySelector('.popup_type_edit');
 }
 
-function GetformEditProfile(){
+export function GetformEditProfile(){
     return GetPopupEdit().querySelector('.popup__form');
 }
 
-function GetpopupImage(){
+export function GetpopupImage(){
     return document.querySelector('.popup_type_image');
 }
 
 // Переменные для редактирования профиля
-function GetnameInput() {
+export function GetnameInput() {
     return GetformEditProfile().querySelector(".popup__input_type_name");
 }
 
-function GetjobInput() {
+export function GetjobInput() {
     return GetformEditProfile().querySelector(".popup__input_type_name");
 }
 
@@ -54,7 +52,7 @@ function handleLikeButtonClick(likeButton) {
 }
 
 // Функция создания карточки
-function createCard(cardData, deleteCard) {
+export function createCard(cardData, deleteCard) {
   const cardElement = GetCardTemplate().cloneNode(true);
 
   const cardImage = cardElement.querySelector('.card__image');
@@ -102,7 +100,7 @@ function openModalForImage(element, evt) {
 }
 
 // Функция удаления карточки
-function removeCard(e) {
+export function removeCard(e) {
     const cardElement = e.target.closest('.card')
     if (cardElement) {
         cardElement.remove();
@@ -110,7 +108,7 @@ function removeCard(e) {
 }
 
 // Функция для обработки нажатия клавиши Esc
-function handleEscClose(e) {
+export function handleEscClose(e) {
     if (e.key === 'Escape') {
         const openPopup = document.querySelector('.popup_is-opened');
         if (openPopup) {
@@ -126,7 +124,7 @@ export function openPopup() {
 }
 
 // Закрытие попапа (обновленная функция)
-function closePopup(popup) {
+export function closePopup(popup) {
     popup.classList.remove('popup_is-opened');
 
     document.removeEventListener('keydown', handleEscClose);
