@@ -1,0 +1,10 @@
+@import './blocks/card/card.css';
+@import './blocks/content/content.css';
+@import './blocks/footer/footer.css';
+@import './blocks/header/header.css';
+@import './blocks/page/page.css';
+@import './blocks/places/places.css';
+@import './blocks/popup/popup.css';
+@import './blocks/profile/profile.css';
+@import './vendor/fonts.css';
+@import './vendor/normalize.css';

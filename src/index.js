@@ -1,61 +1,115 @@
-// теперь картинки можно импортировать,
-// вебпак добавит в переменные правильные пути
-import card_1 from './images/card_1.jpg';
-import card_2 from './images/card_2.jpg';
-import card_3 from './images/card_3.jpg';
-import avatar from './images/avatar.jpg';
+import './index.css'
 
-import './blocks/card/card.css'; // добавьте импорт главного файла стилей
-import './blocks/card/__delete-button/card__delete-button.css';
-import './blocks/card/__description/card__description.css';
-import './blocks/card/__image/card__image.css';
-import './blocks/card/__like-button/_is-active/card__like-button_is-active.css';
-import './blocks/card/__like-button/card__like-button.css';
-import './blocks/card/__title/card__title.css';
-import './blocks/content/content.css';
-import './blocks/footer/footer.css';
-import './blocks/footer/__copyright/footer__copyright.css';
-import './blocks/header/header.css';
-import './blocks/header/__logo/header__logo.css';
-import './blocks/page/page.css';
-import './blocks/page/__content/page__content.css';
-import './blocks/page/__section/page__section.css';
-import './blocks/places/places.css';
-import './blocks/places/__item/places__item.css';
-import './blocks/places/__list/places__list.css';
-import './blocks/popup/popup.css';
-import './blocks/popup/__button/popup__button.css';
-import './blocks/popup/__caption/popup__caption.css';
-import './blocks/popup/__close/popup__close.css';
-import './blocks/popup/__content/popup__content.css';
-import './blocks/popup/__content/_content/popup__content_content_image.css'; //ah yes __content_content
-import './blocks/popup/__form/popup__form.css';
-import './blocks/popup/__image/popup__image.css';
-import './blocks/popup/__input/popup__input.css';
-import './blocks/popup/__title/popup__title.css';
-import './blocks/popup/_is-animated/popup_is-animated.css';
-import './blocks/popup/_is-opened/popup_is-opened.css';
-import './blocks/profile/profile.css';
-import './blocks/profile/__add-button/profile__add-button.css';
-import './blocks/profile/__description/profile__description.css';
-import './blocks/profile/__edit-button/profile__edit-button.css';
-import './blocks/profile/__image/profile__image.css';
-import './blocks/profile/__info/profile__info.css';
-import './blocks/profile/__title/profile__title.css';
-import './pages/index.css'; //the question is whether i need this or not
-import * as init from './components/init.js';
-import * as cards from './components/cards.js';
-import './vendor/fonts.css';
-import './vendor/normalize.css';
+import { openPopup } from './components/modal.js';
 
-const CardsAndImages = [
-    { name: 'card_1', link: './images/card_1.jpg' },
-    { name: 'card_2', link: './images/card_2.jpg' },
-    { name: 'card_3', link: './images/card_3.jpg' },
-    { name: 'avatar', link: './images/avatar.jpg' },
-];
+import { initialCards } from './components/cards.js';
+import { handleLikeButtonClick, removeCard, createCard } from './components/card.js';
+
+const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
+
+const cardsContainer = document.querySelector('.places__list');
+
+const popupNewCard = document.querySelector('.popup_type_new-card');
+const popupNewCardButton = document.querySelector('.profile__add-button');
+const popupNewCardForm =  popupNewCard.querySelector('.popup__form');
+
+const popupImage = document.querySelector('.popup_type_image');
+const popupImageElement = popupImage.querySelector(".popup__image");
+const popupImageCaption = popupImage.querySelector(".popup__caption");
+
+const popupEditProfile = document.querySelector('.popup_type_edit');
+const popupEditProfileForm = popupEditProfile.querySelector('.popup__form');
+const popupEditProfileFormInputName = popupEditProfile.querySelector('.popup__input_type_name');
+const popupEditProfileFormInputDescription = popupEditProfile.querySelector('.popup__input_type_description');
+const popupEditProfileButton = document.querySelector('.profile__edit-button');
+
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
+
+const closePopupButtons = document.querySelectorAll('.popup__close');
+
+// Функция открытия попапа редактирования профиля
+function openEditProfilePopup() {
+
+    // Заполняем поля формы текущими значениями
+    popupEditProfileFormInputName.value = profileTitle.value;
+    popupEditProfileFormInputDescription.value = profileDescription.value;
+
+    // Открываем попап
+    openPopup(popupEditProfile);
+}
+
+// Функция попапа с изображением
+function openModalForImage(cardData) {
+    
+    popupImageElement.src = cardData.link;
+    popupImageElement.scr = cardData.name;
+    
+    // Устанавливаем подпись к изображению
+    popupImageCaption.textContent = cardData.name;
+
+    openPopup(popupImage);
+}
+
+function saveProfile() {
+    // Заполняем поля формы текущими значениями
+    popupEditProfileFormInputName.value = profileTitle.value;
+    popupEditProfileFormInputDescription.value = profileDescription.value;
+
+    // Закрываем попап
+    closePopup(popupEditProfile);
+    popupEditProfileForm.reset(); 
+}
+
+function saveCard() {
+    const placeName = popupNewCardForm.querySelector('.popup__input_type_card-name').value;
+    const link = popupNewCardForm.querySelector('.popup__input_type_url').value;
+
+    const newCardData = { name: placeName, link: link };
+
+    const cardElement = createCard(newCardData, removeCard); 
+    cardsContainer.prepend(cardElement);
+    
+    // Закрываем попап
+    closePopup(popupNewCard);
+    popupNewCardForm.reset(); 
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-    init.AddHandlers();
-    cards.showCard();
+    initialCards.forEach((cardData) => {
+        const cardElement = createCard(cardTemplate, cardData, openModalForImage, handleLikeButtonClick, removeCard); 
+        cardsContainer.append(cardElement);
+    });
+
+    popupEditProfileButton.addEventListener('click', () => {
+        openEditProfilePopup();
+    });
+
+    document.querySelectorAll('.popup').forEach((popup) => {
+        popup.classList.add('popup_is-animated');
+    });
+
+    popupNewCardButton.addEventListener('click', () => {
+        openPopup(popupNewCard);
+    });
+
+    // Обработчик события для закрытия попапа
+    closePopupButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const popup = e.target.closest('.popup');
+            closePopup(popup);
+        });
+    });
+
+    // Обработчик события для отправки формы новой карточки
+    popupNewCardForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveCard();
+    });
+    
+    // Обработчик события для отправки формы редактирования
+    popupEditProfileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        saveProfile();
+    });
 });
