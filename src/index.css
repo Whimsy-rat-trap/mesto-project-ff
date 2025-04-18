@@ -5,6 +5,8 @@
 @import './blocks/page/page.css';
 @import './blocks/places/places.css';
 @import './blocks/popup/popup.css';
+@import './blocks/popup/_is-animated/popup_is-animated.css';
+@import './blocks/popup/_is-opened/popup_is-opened.css';
 @import './blocks/profile/profile.css';
 @import './vendor/fonts.css';
 @import './vendor/normalize.css';

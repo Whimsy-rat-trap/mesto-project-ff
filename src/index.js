@@ -1,9 +1,9 @@
 import './index.css'
 
-import { openPopup } from './components/modal.js';
+import {openPopup, closePopup} from './components/modal.js';
 
-import { initialCards } from './components/cards.js';
-import { handleLikeButtonClick, removeCard, createCard } from './components/card.js';
+import {initialCards} from './components/cards.js';
+import {handleLikeButtonClick, removeCard, createCard} from './components/card.js';
 
 const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
 
@@ -11,7 +11,7 @@ const cardsContainer = document.querySelector('.places__list');
 
 const popupNewCard = document.querySelector('.popup_type_new-card');
 const popupNewCardButton = document.querySelector('.profile__add-button');
-const popupNewCardForm =  popupNewCard.querySelector('.popup__form');
+const popupNewCardForm = popupNewCard.querySelector('.popup__form');
 
 const popupImage = document.querySelector('.popup_type_image');
 const popupImageElement = popupImage.querySelector(".popup__image");
@@ -32,8 +32,8 @@ const closePopupButtons = document.querySelectorAll('.popup__close');
 function openEditProfilePopup() {
 
     // Заполняем поля формы текущими значениями
-    popupEditProfileFormInputName.value = profileTitle.value;
-    popupEditProfileFormInputDescription.value = profileDescription.value;
+    popupEditProfileFormInputName.value = profileTitle.textContent;
+    popupEditProfileFormInputDescription.value = profileDescription.textContent;
 
     // Открываем попап
     openPopup(popupEditProfile);
@@ -41,10 +41,10 @@ function openEditProfilePopup() {
 
 // Функция попапа с изображением
 function openModalForImage(cardData) {
-    
+
     popupImageElement.src = cardData.link;
-    popupImageElement.scr = cardData.name;
-    
+    popupImageElement.alt = cardData.name;
+
     // Устанавливаем подпись к изображению
     popupImageCaption.textContent = cardData.name;
 
@@ -52,51 +52,54 @@ function openModalForImage(cardData) {
 }
 
 function saveProfile() {
-    // Заполняем поля формы текущими значениями
-    popupEditProfileFormInputName.value = profileTitle.value;
-    popupEditProfileFormInputDescription.value = profileDescription.value;
+    profileTitle.textContent = popupEditProfileFormInputName.value;
+    profileDescription.textContent = popupEditProfileFormInputDescription.value;
 
     // Закрываем попап
     closePopup(popupEditProfile);
-    popupEditProfileForm.reset(); 
+    popupEditProfileForm.reset();
 }
 
 function saveCard() {
     const placeName = popupNewCardForm.querySelector('.popup__input_type_card-name').value;
     const link = popupNewCardForm.querySelector('.popup__input_type_url').value;
 
-    const newCardData = { name: placeName, link: link };
+    const newCardData = {name: placeName, link: link};
 
-    const cardElement = createCard(newCardData, removeCard); 
+    const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
     cardsContainer.prepend(cardElement);
-    
+
     // Закрываем попап
     closePopup(popupNewCard);
-    popupNewCardForm.reset(); 
+    popupNewCardForm.reset();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     initialCards.forEach((cardData) => {
-        const cardElement = createCard(cardTemplate, cardData, openModalForImage, handleLikeButtonClick, removeCard); 
+        const cardElement = createCard(cardTemplate, cardData, openModalForImage, handleLikeButtonClick, removeCard);
         cardsContainer.append(cardElement);
     });
 
-    popupEditProfileButton.addEventListener('click', () => {
-        openEditProfilePopup();
-    });
+    popupEditProfileButton.addEventListener('click', () => openEditProfilePopup());
 
     document.querySelectorAll('.popup').forEach((popup) => {
         popup.classList.add('popup_is-animated');
+        popup.addEventListener("click", (evt) => {
+            if (evt.target === popup) {
+                closePopup(popup)
+            }
+        });
     });
 
     popupNewCardButton.addEventListener('click', () => {
+        popupNewCardForm.reset();
         openPopup(popupNewCard);
     });
 
     // Обработчик события для закрытия попапа
     closePopupButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const popup = e.target.closest('.popup');
+        button.addEventListener('click', () => {
+            const popup = button.closest('.popup');
             closePopup(popup);
         });
     });
@@ -106,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         saveCard();
     });
-    
+
     // Обработчик события для отправки формы редактирования
     popupEditProfileForm.addEventListener('submit', (e) => {
         e.preventDefault();
