@@ -6,7 +6,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: {
     main: './src/index.js'
-    //main: './src/scripts/index.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -15,13 +14,13 @@ module.exports = {
   },
   mode: 'development',
   optimization: {
-    minimize: false, // Отключаем минификацию
+    minimize: true,
   },
   devServer: {
     static: path.resolve(__dirname, './dist'),
     open: true,
-    compress: false,
-    port: 8081 //8080
+    compress: true,
+    port: 8081
   },
   module: {
     rules: [{
@@ -34,7 +33,7 @@ module.exports = {
         type: 'asset/resource',
       },
       {
-        test: /\.css$/, // Обработка CSS файлов
+        test: /\.css$/,
         use: [
           MiniCssExtractPlugin.loader, 
           {
@@ -54,7 +53,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'styles.css', // Имя итогового CSS файла
+      filename: 'styles.css',
     }),
 
   ]

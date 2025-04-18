@@ -1,4 +1,3 @@
-// Вывести карточки на страницу
 export const initialCards = [
     {
       name: "Архыз",
