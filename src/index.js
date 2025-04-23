@@ -12,6 +12,8 @@ const cardsContainer = document.querySelector('.places__list');
 const popupNewCard = document.querySelector('.popup_type_new-card');
 const popupNewCardButton = document.querySelector('.profile__add-button');
 const popupNewCardForm = popupNewCard.querySelector('.popup__form');
+const popupNewCardFormLink = popupNewCardForm.querySelector('.popup__input_type_url');
+const popupNewCardFormName = popupNewCardForm.querySelector('.popup__input_type_card-name')
 
 const popupImage = document.querySelector('.popup_type_image');
 const popupImageElement = popupImage.querySelector(".popup__image");
@@ -27,6 +29,7 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 
 const closePopupButtons = document.querySelectorAll('.popup__close');
+
 
 // Функция открытия попапа редактирования профиля
 function openEditProfilePopup() {
@@ -61,8 +64,8 @@ function saveProfile() {
 }
 
 function saveCard() {
-    const placeName = popupNewCardForm.querySelector('.popup__input_type_card-name').value;
-    const link = popupNewCardForm.querySelector('.popup__input_type_url').value;
+    const placeName = popupNewCardFormName.value;
+    const link = popupNewCardFormLink.value;
 
     const newCardData = {name: placeName, link: link};
 
