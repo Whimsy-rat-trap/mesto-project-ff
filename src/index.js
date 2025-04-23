@@ -5,6 +5,8 @@ import {openPopup, closePopup} from './components/modal.js';
 import {initialCards} from './components/cards.js';
 import {handleLikeButtonClick, removeCard, createCard} from './components/card.js';
 
+import { validationConfig } from "./components/validationConfig";
+
 const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
 
 const cardsContainer = document.querySelector('.places__list');
@@ -12,8 +14,8 @@ const cardsContainer = document.querySelector('.places__list');
 const popupNewCard = document.querySelector('.popup_type_new-card');
 const popupNewCardButton = document.querySelector('.profile__add-button');
 const popupNewCardForm = popupNewCard.querySelector('.popup__form');
-const popupNewCardFormLink = popupNewCardForm.querySelector('.popup__input_type_url');
-const popupNewCardFormName = popupNewCardForm.querySelector('.popup__input_type_card-name')
+const popupNewCardFormInputLink  = popupNewCardForm.querySelector('.popup__input_type_url');
+const popupNewCardFormInputName = popupNewCardForm.querySelector('.popup__input_type_card-name')
 
 const popupImage = document.querySelector('.popup_type_image');
 const popupImageElement = popupImage.querySelector(".popup__image");
@@ -64,8 +66,8 @@ function saveProfile() {
 }
 
 function saveCard() {
-    const placeName = popupNewCardFormName.value;
-    const link = popupNewCardFormLink.value;
+    const placeName = popupNewCardFormInputName.value;
+    const link = popupNewCardFormInputLink .value;
 
     const newCardData = {name: placeName, link: link};
 
