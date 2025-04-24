@@ -5,7 +5,8 @@ import {openPopup, closePopup} from './components/modal.js';
 import {initialCards} from './components/cards.js';
 import {handleLikeButtonClick, removeCard, createCard} from './components/card.js';
 
-import { validationConfig } from "./components/validationConfig";
+import { validationConfig } from "./components/validationConfig.js";
+import { enableValidation, clearValidation } from "./components/validation.js";
 
 const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
 
@@ -32,6 +33,7 @@ const profileDescription = document.querySelector('.profile__description');
 
 const closePopupButtons = document.querySelectorAll('.popup__close');
 
+enableValidation(validationConfig);
 
 // Функция открытия попапа редактирования профиля
 function openEditProfilePopup() {
@@ -119,5 +121,23 @@ document.addEventListener('DOMContentLoaded', () => {
     popupEditProfileForm.addEventListener('submit', (e) => {
         e.preventDefault();
         saveProfile();
+    });
+ 
+    //-
+    // Обработчики событий для полей ввода
+    popupNewCardFormInputName.addEventListener('input', () => {
+        console.log(`Содержимое поля "Название": ${popupNewCardFormInputName.value}`);
+    });
+
+    popupNewCardFormInputLink.addEventListener('input', () => {
+        console.log(`Содержимое поля "Ссылка": ${popupNewCardFormInputLink.value}`);
+    });
+
+    popupEditProfileFormInputName.addEventListener('input', () => {
+        console.log(`Содержимое поля "Имя": ${popupEditProfileFormInputName.value}`);
+    });
+
+    popupEditProfileFormInputDescription.addEventListener('input', () => {
+        console.log(`Содержимое поля "Занятие": ${popupEditProfileFormInputDescription.value}`);
     });
 });
