@@ -7,7 +7,7 @@ const showInputError = (formElement, inputElement, errorMessage, validationConfi
 }
 
 // Функция для скрытия ошибки
-const hideInputError = (formElement, inputElement, validationConfig) => {
+const hideInputError = (formElement, inputElement, errorMessage, validationConfig) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     inputElement.classList.remove(validationConfig.inputErrorClass);
     errorElement.textContent = errorMessage;

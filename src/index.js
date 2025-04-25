@@ -16,11 +16,19 @@ const popupNewCard = document.querySelector('.popup_type_new-card');
 const popupNewCardButton = document.querySelector('.profile__add-button');
 const popupNewCardForm = popupNewCard.querySelector('.popup__form');
 const popupNewCardFormInputLink  = popupNewCardForm.querySelector('.popup__input_type_url');
-const popupNewCardFormInputName = popupNewCardForm.querySelector('.popup__input_type_card-name')
+const popupNewCardFormInputName = popupNewCardForm.querySelector('.popup__input_type_card-name');
+const popupNewCardFormInputNameMinLength = parseInt(popupNewCardFormInputName.getAttribute('minlength'), 10);
+const popupNewCardFormInputNameMaxLength = parseInt(popupNewCardFormInputName.getAttribute('maxlength'), 10);
+const popupNewCardFormInputNameError = popupNewCardForm.querySelector('.cardNameInput-error');
+const popupNewCardFormInputLinkError = popupNewCardForm.querySelector('.linkInput-error');
 
 const popupImage = document.querySelector('.popup_type_image');
 const popupImageElement = popupImage.querySelector(".popup__image");
 const popupImageCaption = popupImage.querySelector(".popup__caption");
+
+const pattern = /^[a-zA-Zа-яА-Я\s\-]+$/
+const linkPattern = /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+                  ///^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/
 
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const popupEditProfileForm = popupEditProfile.querySelector('.popup__form');
@@ -28,12 +36,15 @@ const popupEditProfileFormInputName = popupEditProfile.querySelector('.popup__in
 const popupEditProfileFormInputDescription = popupEditProfile.querySelector('.popup__input_type_description');
 const popupEditProfileButton = document.querySelector('.profile__edit-button');
 
+const popupEditProfileFormInputNameError = popupEditProfile.querySelector('.editNameInput-error');
+const popupEditProfileFormInputDescriptionError = popupEditProfile.querySelector('.editDescriptionInput-error');
+
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 
 const closePopupButtons = document.querySelectorAll('.popup__close');
 
-enableValidation(validationConfig);
+//enableValidation(validationConfig);
 
 // Функция открытия попапа редактирования профиля
 function openEditProfilePopup() {
@@ -125,19 +136,60 @@ document.addEventListener('DOMContentLoaded', () => {
  
     //-
     // Обработчики событий для полей ввода
-    popupNewCardFormInputName.addEventListener('input', () => {
-        console.log(`Содержимое поля "Название": ${popupNewCardFormInputName.value}`);
+    popupNewCardFormInputName.addEventListener('input', () => { //ВАЛИДАЦИЯ ДЛИННЫ ВВЕДЁННОГО ТЕКСТА
+        const inputValueLength = popupNewCardFormInputName.value.length; //длинна введённого текста
+        if (inputValueLength < popupNewCardFormInputNameMinLength || inputValueLength > popupNewCardFormInputNameMaxLength) {
+            popupNewCardFormInputNameError.textContent = `Название должно содержать от ${popupNewCardFormInputNameMinLength} до ${popupNewCardFormInputNameMaxLength} символов.`;
+            popupNewCardFormInputNameError.classList.remove(validationConfig.noErrorClass);
+            popupNewCardFormInputNameError.classList.add(validationConfig.errorClass);
+        } else if (!pattern.test(popupNewCardFormInputName.value)) {  //ВАЛИДАЦИЯ PATTERN
+            console.log(`Содержимое поля "Название": ${popupNewCardFormInputName.value}`);
+            popupNewCardFormInputNameError.textContent = "Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы";
+            popupNewCardFormInputNameError.classList.remove(validationConfig.noErrorClass);
+            popupNewCardFormInputNameError.classList.add(validationConfig.errorClass);
+        } else { //ОЧИСТКА ОШИБКИ
+            popupNewCardFormInputNameError.textContent = "";
+            popupNewCardFormInputNameError.classList.remove(validationConfig.errorClass);
+            popupNewCardFormInputNameError.classList.add(validationConfig.noErrorClass);
+        }
     });
 
     popupNewCardFormInputLink.addEventListener('input', () => {
-        console.log(`Содержимое поля "Ссылка": ${popupNewCardFormInputLink.value}`);
+        if (!linkPattern.test(popupNewCardFormInputLink.value)) {
+            console.log(`Содержимое поля "Ссылка": ${popupNewCardFormInputLink.value}`);
+            popupNewCardFormInputLinkError.textContent = "Введите корректный URL.";
+            popupNewCardFormInputLinkError.classList.remove(validationConfig.noErrorClass);
+            popupNewCardFormInputLinkError.classList.add(validationConfig.errorClass);
+        } else {
+            popupEditProfileFormInputNameError.textContent = ""; //ОЧИСТКА ОШИБКИ
+            popupEditProfileFormInputNameError.classList.remove(validationConfig.errorClass);
+            popupEditProfileFormInputNameError.classList.add(validationConfig.noErrorClass);
+        }
     });
 
     popupEditProfileFormInputName.addEventListener('input', () => {
-        console.log(`Содержимое поля "Имя": ${popupEditProfileFormInputName.value}`);
+        if (popupEditProfileFormInputName.value == "aaa") {
+            console.log(`Содержимое поля "Имя": ${popupEditProfileFormInputName.value}`);
+            popupEditProfileFormInputNameError.textContent = "ошибка с именем";
+            popupEditProfileFormInputNameError.classList.remove(validationConfig.noErrorClass);
+            popupEditProfileFormInputNameError.classList.add(validationConfig.errorClass);
+        } else {
+            popupEditProfileFormInputNameError.textContent = ""; //ОЧИСТКА ОШИБКИ
+            popupEditProfileFormInputNameError.classList.remove(validationConfig.errorClass);
+            popupEditProfileFormInputNameError.classList.add(validationConfig.noErrorClass);
+        }
     });
 
     popupEditProfileFormInputDescription.addEventListener('input', () => {
-        console.log(`Содержимое поля "Занятие": ${popupEditProfileFormInputDescription.value}`);
+        if (popupEditProfileFormInputDescription.value == "aaa") {
+            console.log(`Содержимое поля "Занятие": ${popupEditProfileFormInputDescription.value}`);
+            popupEditProfileFormInputDescriptionError.textContent = "ошибка с занятием";
+            popupEditProfileFormInputDescriptionError.classList.remove(validationConfig.noErrorClass);
+            popupEditProfileFormInputDescriptionError.classList.add(validationConfig.errorClass);
+        } else {
+            popupEditProfileFormInputDescriptionError.textContent = ""; //ОЧИСТКА ОШИБКИ
+            popupEditProfileFormInputDescriptionError.classList.remove(validationConfig.errorClass);
+            popupEditProfileFormInputDescriptionError.classList.add(validationConfig.noErrorClass);
+        }
     });
 });
