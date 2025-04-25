@@ -21,6 +21,7 @@ const popupNewCardFormInputName = popupNewCardForm.querySelector('.popup__input_
 const popupNewCardFormInputNameError = popupNewCardForm.querySelector('.cardNameInput-error');
 const popupNewCardFormInputNameMinLength = parseInt(popupNewCardFormInputName.getAttribute('minlength'), 10);
 const popupNewCardFormInputNameMaxLength = parseInt(popupNewCardFormInputName.getAttribute('maxlength'), 10);
+const popupNewCardFormInputTextError = popupNewCardFormInputName.getAttribute('data-error-message');
 
 const popupImage = document.querySelector('.popup_type_image');
 const popupImageElement = popupImage.querySelector(".popup__image");
@@ -38,8 +39,8 @@ const popupEditProfileFormInputNameError = popupEditProfile.querySelector('.edit
 const popupEditProfileFormInputDescriptionError = popupEditProfile.querySelector('.editDescriptionInput-error');
 const popupEditProfileFormInputNameMinLength = parseInt(popupEditProfileFormInputName.getAttribute('minlength'), 10);
 const popupEditProfileFormInputNameMaxLength = parseInt(popupEditProfileFormInputName.getAttribute('maxlength'), 10);
-const popupEditProfileFormInputNameErrorFormInputNameMinLength = parseInt(popupEditProfileFormInputName.getAttribute('minlength'), 10);
-const popupEditProfileFormInputNameErrorFormInputNameMaxLength = parseInt(popupEditProfileFormInputName.getAttribute('maxlength'), 10);
+const popupEditProfileFormInputNameErrorFormInputNameMinLength = parseInt(popupEditProfileFormInputDescription.getAttribute('minlength'), 10);
+const popupEditProfileFormInputNameErrorFormInputNameMaxLength = parseInt(popupEditProfileFormInputDescription.getAttribute('maxlength'), 10);
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
@@ -146,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             popupNewCardFormInputNameError.classList.add(validationConfig.errorClass);
         } else if (!pattern.test(popupNewCardFormInputName.value)) {  //ВАЛИДАЦИЯ PATTERN
             console.log(`Содержимое поля "Название": ${popupNewCardFormInputName.value}`);
-            popupNewCardFormInputNameError.textContent = "Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы";
+            popupNewCardFormInputNameError.textContent = popupNewCardFormInputTextError; //думал что нужно было сделать все ошибки константами
             popupNewCardFormInputNameError.classList.remove(validationConfig.noErrorClass);
             popupNewCardFormInputNameError.classList.add(validationConfig.errorClass);
         } else { //ОЧИСТКА ОШИБКИ

@@ -53,7 +53,7 @@
       <form class="popup__form" name="new-place" novalidate>
         <input type="text" name="place-name" class="popup__input popup__input_type_card-name" id="cardNameInput" placeholder="Название" minlength="2" maxlength="30" pattern="^[a-zA-Zа-яА-Я\s\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
         <span class="popup__error_invisible cardNameInput-error"></span> 
-        <input type="url" name="link" class="popup__input popup__input_type_url" id="cardLinkInput" placeholder="Ссылка на картинку" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
+        <input type="url" name="link" class="popup__input popup__input_type_url" id="cardLinkInput" placeholder="Ссылка на картинку" data-error-message="Введите корректный URL." required>
         <span class="popup__error_invisible linkInput-error"></span>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
