@@ -16,28 +16,30 @@ const popupNewCard = document.querySelector('.popup_type_new-card');
 const popupNewCardButton = document.querySelector('.profile__add-button');
 const popupNewCardForm = popupNewCard.querySelector('.popup__form');
 const popupNewCardFormInputLink  = popupNewCardForm.querySelector('.popup__input_type_url');
+const popupNewCardFormInputLinkError = popupNewCardForm.querySelector('.linkInput-error');
 const popupNewCardFormInputName = popupNewCardForm.querySelector('.popup__input_type_card-name');
+const popupNewCardFormInputNameError = popupNewCardForm.querySelector('.cardNameInput-error');
 const popupNewCardFormInputNameMinLength = parseInt(popupNewCardFormInputName.getAttribute('minlength'), 10);
 const popupNewCardFormInputNameMaxLength = parseInt(popupNewCardFormInputName.getAttribute('maxlength'), 10);
-const popupNewCardFormInputNameError = popupNewCardForm.querySelector('.cardNameInput-error');
-const popupNewCardFormInputLinkError = popupNewCardForm.querySelector('.linkInput-error');
 
 const popupImage = document.querySelector('.popup_type_image');
 const popupImageElement = popupImage.querySelector(".popup__image");
 const popupImageCaption = popupImage.querySelector(".popup__caption");
 
 const pattern = /^[a-zA-Zа-яА-Я\s\-]+$/
-const linkPattern = /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
-                  ///^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/
+const linkPattern = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/
 
 const popupEditProfile = document.querySelector('.popup_type_edit');
+const popupEditProfileButton = document.querySelector('.profile__edit-button');
 const popupEditProfileForm = popupEditProfile.querySelector('.popup__form');
 const popupEditProfileFormInputName = popupEditProfile.querySelector('.popup__input_type_name');
 const popupEditProfileFormInputDescription = popupEditProfile.querySelector('.popup__input_type_description');
-const popupEditProfileButton = document.querySelector('.profile__edit-button');
-
 const popupEditProfileFormInputNameError = popupEditProfile.querySelector('.editNameInput-error');
 const popupEditProfileFormInputDescriptionError = popupEditProfile.querySelector('.editDescriptionInput-error');
+const popupEditProfileFormInputNameMinLength = parseInt(popupEditProfileFormInputName.getAttribute('minlength'), 10);
+const popupEditProfileFormInputNameMaxLength = parseInt(popupEditProfileFormInputName.getAttribute('maxlength'), 10);
+const popupEditProfileFormInputNameErrorFormInputNameMinLength = parseInt(popupEditProfileFormInputName.getAttribute('minlength'), 10);
+const popupEditProfileFormInputNameErrorFormInputNameMaxLength = parseInt(popupEditProfileFormInputName.getAttribute('maxlength'), 10);
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
@@ -137,8 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //-
     // Обработчики событий для полей ввода
     popupNewCardFormInputName.addEventListener('input', () => { //ВАЛИДАЦИЯ ДЛИННЫ ВВЕДЁННОГО ТЕКСТА
-        const inputValueLength = popupNewCardFormInputName.value.length; //длинна введённого текста
-        if (inputValueLength < popupNewCardFormInputNameMinLength || inputValueLength > popupNewCardFormInputNameMaxLength) {
+        const  popupNewCardFormInputNameInputValueLength = popupNewCardFormInputName.value.length; //длинна введённого текста
+        if (popupNewCardFormInputNameInputValueLength < popupNewCardFormInputNameMinLength || popupNewCardFormInputNameInputValueLength > popupNewCardFormInputNameMaxLength) {
             popupNewCardFormInputNameError.textContent = `Название должно содержать от ${popupNewCardFormInputNameMinLength} до ${popupNewCardFormInputNameMaxLength} символов.`;
             popupNewCardFormInputNameError.classList.remove(validationConfig.noErrorClass);
             popupNewCardFormInputNameError.classList.add(validationConfig.errorClass);
@@ -161,33 +163,43 @@ document.addEventListener('DOMContentLoaded', () => {
             popupNewCardFormInputLinkError.classList.remove(validationConfig.noErrorClass);
             popupNewCardFormInputLinkError.classList.add(validationConfig.errorClass);
         } else {
-            popupEditProfileFormInputNameError.textContent = ""; //ОЧИСТКА ОШИБКИ
-            popupEditProfileFormInputNameError.classList.remove(validationConfig.errorClass);
-            popupEditProfileFormInputNameError.classList.add(validationConfig.noErrorClass);
+            popupNewCardFormInputLinkError.textContent = "";
+            popupNewCardFormInputLinkError.classList.remove(validationConfig.errorClass);
+            popupNewCardFormInputLinkError.classList.add(validationConfig.noErrorClass);
         }
     });
 
     popupEditProfileFormInputName.addEventListener('input', () => {
-        if (popupEditProfileFormInputName.value == "aaa") {
-            console.log(`Содержимое поля "Имя": ${popupEditProfileFormInputName.value}`);
-            popupEditProfileFormInputNameError.textContent = "ошибка с именем";
+        const popupEditProfileFormInputNameInputValueLength = popupEditProfileFormInputName.value.length; //длинна введённого текста
+        if (popupEditProfileFormInputNameInputValueLength < popupEditProfileFormInputNameMinLength || popupEditProfileFormInputNameInputValueLength > popupEditProfileFormInputNameMaxLength) {
+            popupEditProfileFormInputNameError.textContent = `Название должно содержать от ${popupEditProfileFormInputNameMinLength} до ${popupEditProfileFormInputNameMaxLength} символов.`;
+            popupEditProfileFormInputNameError.classList.remove(validationConfig.noErrorClass);
+            popupEditProfileFormInputNameError.classList.add(validationConfig.errorClass);
+        } else if (!pattern.test(popupEditProfileFormInputName.value)) {  //ВАЛИДАЦИЯ PATTERN
+            console.log(`Содержимое поля "Название": ${popupNewCardFormInputName.value}`);
+            popupEditProfileFormInputNameError.textContent = "Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы";
             popupEditProfileFormInputNameError.classList.remove(validationConfig.noErrorClass);
             popupEditProfileFormInputNameError.classList.add(validationConfig.errorClass);
         } else {
-            popupEditProfileFormInputNameError.textContent = ""; //ОЧИСТКА ОШИБКИ
+            popupEditProfileFormInputNameError.textContent = "";
             popupEditProfileFormInputNameError.classList.remove(validationConfig.errorClass);
             popupEditProfileFormInputNameError.classList.add(validationConfig.noErrorClass);
         }
     });
 
     popupEditProfileFormInputDescription.addEventListener('input', () => {
-        if (popupEditProfileFormInputDescription.value == "aaa") {
-            console.log(`Содержимое поля "Занятие": ${popupEditProfileFormInputDescription.value}`);
-            popupEditProfileFormInputDescriptionError.textContent = "ошибка с занятием";
+        const popupEditProfileFormInputDescriptionInputValueLength = popupEditProfileFormInputDescription.value.length; //длинна введённого текста
+        if (popupEditProfileFormInputDescriptionInputValueLength < popupEditProfileFormInputNameErrorFormInputNameMinLength || popupEditProfileFormInputDescriptionInputValueLength > popupEditProfileFormInputNameErrorFormInputNameMaxLength) {
+            popupEditProfileFormInputDescriptionError.textContent = `Название должно содержать от ${popupEditProfileFormInputNameErrorFormInputNameMinLength} до ${popupEditProfileFormInputNameErrorFormInputNameMaxLength} символов.`;
+            popupEditProfileFormInputDescriptionError.classList.remove(validationConfig.noErrorClass);
+            popupEditProfileFormInputDescriptionError.classList.add(validationConfig.errorClass);
+        } else if (!pattern.test(popupEditProfileFormInputDescription.value)) {  //ВАЛИДАЦИЯ PATTERN
+            console.log(`Содержимое поля "Название": ${popupNewCardFormInputName.value}`);
+            popupEditProfileFormInputDescriptionError.textContent = "Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы";
             popupEditProfileFormInputDescriptionError.classList.remove(validationConfig.noErrorClass);
             popupEditProfileFormInputDescriptionError.classList.add(validationConfig.errorClass);
         } else {
-            popupEditProfileFormInputDescriptionError.textContent = ""; //ОЧИСТКА ОШИБКИ
+            popupEditProfileFormInputDescriptionError.textContent = "";
             popupEditProfileFormInputDescriptionError.classList.remove(validationConfig.errorClass);
             popupEditProfileFormInputDescriptionError.classList.add(validationConfig.noErrorClass);
         }
