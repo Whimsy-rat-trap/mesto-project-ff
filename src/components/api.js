@@ -1,7 +1,7 @@
 //КОНФИГ ЗАПРОСА
-const config = {
-    baseUrl: "https://nomoreparties.co/v1/wff-cohort-36",
+export const config = {
+    baseUrl: "https://nomoreparties.co/v1/wff-cohort-38",
     headers: {
-      authorization: "ff8ac90e-93ac-49b8-a199-3d30956ae046",
+      authorization: "ab8205ad-fc58-4233-b269-d7db741696e0",
     },
 };

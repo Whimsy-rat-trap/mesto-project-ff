@@ -8,6 +8,8 @@ import {handleLikeButtonClick, removeCard, createCard} from './components/card.j
 import { validationConfig } from "./components/validationConfig.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
 
+import { config } from "./components/api.js";
+
 const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
 
 const cardsContainer = document.querySelector('.places__list');
@@ -30,6 +32,7 @@ const popupEditProfileFormInputDescription = popupEditProfile.querySelector('.po
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+const profileImage = document.querySelector('.profile__image');
 
 const closePopupButtons = document.querySelectorAll('.popup__close');
 
@@ -79,8 +82,22 @@ function saveCard() {
     closePopup(popupNewCard);
     popupNewCardForm.reset();
 }
+function getProfile() {
+    fetch(`${config.baseUrl}/users/me`, {
+        headers: {
+          authorization: config.headers.authorization
+        }
+    })
+    .then(res => res.json())
+    .then((result) => {
+        profileTitle.textContent = result.name;
+        profileDescription.textContent = result.about;
+        profileImage.style.backgroundImage = "url('" + result.avatar + "')";
+    });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
+    getProfile();
     initialCards.forEach((cardData) => {
         const cardElement = createCard(cardTemplate, cardData, openModalForImage, handleLikeButtonClick, removeCard);
         cardsContainer.append(cardElement);
