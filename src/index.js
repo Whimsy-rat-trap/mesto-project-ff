@@ -61,26 +61,52 @@ function openModalForImage(cardData) {
 }
 
 function saveProfile() {
-    profileTitle.textContent = popupEditProfileFormInputName.value;
-    profileDescription.textContent = popupEditProfileFormInputDescription.value;
-
-    // Закрываем попап
-    closePopup(popupEditProfile);
-    popupEditProfileForm.reset();
+    fetch(`${config.baseUrl}/users/me`, {
+        method: 'PATCH',
+        headers: {
+            authorization: config.headers.authorization,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: popupEditProfileFormInputName.value,
+          about: popupEditProfileFormInputDescription.value
+        })
+    })
+    .then(() => {
+        profileTitle.textContent = popupEditProfileFormInputName.value;
+        profileDescription.textContent = popupEditProfileFormInputDescription.value;
+    
+        // Закрываем попап
+        closePopup(popupEditProfile);
+        popupEditProfileForm.reset();
+    })
 }
 
 function saveCard() {
     const placeName = popupNewCardFormInputName.value;
     const link = popupNewCardFormInputLink .value;
 
-    const newCardData = {name: placeName, link: link};
-
-    const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
-    cardsContainer.prepend(cardElement);
-
-    // Закрываем попап
-    closePopup(popupNewCard);
-    popupNewCardForm.reset();
+    fetch(`${config.baseUrl}/cards`, {
+        method: 'POST',
+        headers: {
+            authorization: config.headers.authorization,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: popupNewCardFormInputName.value,
+          link: popupNewCardFormInputLink.value
+        })
+    })
+    .then(() => {
+        const newCardData = {name: placeName, link: link};
+    
+        const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
+        cardsContainer.prepend(cardElement);
+    
+        // Закрываем попап
+        closePopup(popupNewCard);
+        popupNewCardForm.reset();
+    })
 }
 function getProfile() {
     fetch(`${config.baseUrl}/users/me`, {
@@ -95,14 +121,31 @@ function getProfile() {
         profileImage.style.backgroundImage = "url('" + result.avatar + "')";
     });
 }
+ 
+function getCards() {
+    fetch(`${config.baseUrl}/cards`, {
+        headers: {
+          authorization: config.headers.authorization
+        }
+    })
+    .then(res => {
+        return res.json();
+      })
+    .then((cards) => {
+        console.log(cards);
+        cards.forEach((card) => {
+            const newCardData = {name: card.name, link: card.link};
+            const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
+            cardsContainer.append(cardElement);
+        });
+    })
+    .catch(err => console.log(err));
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     getProfile();
-    initialCards.forEach((cardData) => {
-        const cardElement = createCard(cardTemplate, cardData, openModalForImage, handleLikeButtonClick, removeCard);
-        cardsContainer.append(cardElement);
-    });
-
+    getCards();
+    
     popupEditProfileButton.addEventListener('click', () => openEditProfilePopup());
 
     document.querySelectorAll('.popup').forEach((popup) => {
