@@ -1,3 +1,4 @@
+import { config } from "./api.js";
 // Функция создания карточки
 export function createCard(cardTemplate, cardData, onPopupImage, onLikeCard, onDeleteCard) {
     const cardElement = cardTemplate.cloneNode(true);
@@ -8,6 +9,7 @@ export function createCard(cardTemplate, cardData, onPopupImage, onLikeCard, onD
     const likeButton = cardElement.querySelector('.card__like-button');
 
     cardImage.src = cardData.link;
+    cardElement.id = cardData.id;
     cardImage.alt = cardData.name;
     cardTitle.textContent = cardData.name;
 
@@ -24,6 +26,13 @@ export function createCard(cardTemplate, cardData, onPopupImage, onLikeCard, onD
 
 // Функция удаления карточки
 export function removeCard(card) {
+    fetch(`${config.baseUrl}/cards/${card.id}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: config.headers.authorization,
+                'Content-Type': 'application/json'
+            }
+    })
     if (card) {
         card.remove();
     }

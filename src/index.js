@@ -97,8 +97,9 @@ function saveCard() {
           link: popupNewCardFormInputLink.value
         })
     })
-    .then(() => {
-        const newCardData = {name: placeName, link: link};
+    .then(res => res.json())
+    .then((card) => {
+        const newCardData = {name: placeName, link: link, id: card._id};
     
         const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
         cardsContainer.prepend(cardElement);
@@ -134,7 +135,7 @@ function getCards() {
     .then((cards) => {
         console.log(cards);
         cards.forEach((card) => {
-            const newCardData = {name: card.name, link: card.link};
+            const newCardData = {name: card.name, link: card.link, id: card._id};
             const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
             cardsContainer.append(cardElement);
         });
