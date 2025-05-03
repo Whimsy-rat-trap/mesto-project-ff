@@ -70,6 +70,28 @@ function openModalForImage(cardData) {
     openPopup(popupImage);
 }
 
+// Функция изменения изображения профиля
+function saveProfileImage() {
+    const newAvatarUrl = popupTypeAvatarInput.value; // Получаем новый URL изображения
+
+    fetch(`${config.baseUrl}/users/me/avatar`, {
+        method: 'PATCH',
+        headers: {
+            authorization: config.headers.authorization,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            avatar: newAvatarUrl
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        profileImage.style.src = `url(${data.avatar})`; // Обновляем изображение профиля
+        closePopup(popupEditProfileAvatar);
+        popupEditProfileAvatarForm.reset();
+    })
+}
+
 function saveProfile() {
     fetch(`${config.baseUrl}/users/me`, {
         method: 'PATCH',
@@ -158,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     getCards();
 
     profileImage.addEventListener("click", openEditProfileAvatarPopup);
+    popupEditProfileAvatarForm.addEventListener("submit", () => saveProfileImage());
     
     popupEditProfileButton.addEventListener('click', () => openEditProfilePopup());
 
