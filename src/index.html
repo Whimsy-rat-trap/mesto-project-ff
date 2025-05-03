@@ -67,6 +67,17 @@
     </div>
   </div>
 </div>
+<div class="popup popup_type_avatar">
+  <div class="popup__content popup__content_avatar">
+    <button type="button" class="popup__close"></button>
+    <h3 class="popup__title">Обновить аватар</h3>
+    <form class="popup__form" name="avatar-profile" novalidate>
+      <input type="url" name="link" id="avatarLinkInput" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" pattern="^https?:\/\/[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}.*$" data-error-message="Введите корректный URL." required>
+      <span class="form__input-error avatarLinkInput-error"></span>
+      <button type="submit" class="button popup__button">Сохранить</button>
+    </form>
+  </div>
+</div>
 
 <template id="card-template">
   <li class="places__item card">

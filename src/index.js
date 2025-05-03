@@ -30,11 +30,21 @@ const popupEditProfileForm = popupEditProfile.querySelector('.popup__form');
 const popupEditProfileFormInputName = popupEditProfile.querySelector('.popup__input_type_name');
 const popupEditProfileFormInputDescription = popupEditProfile.querySelector('.popup__input_type_description');
 
+const popupEditProfileAvatar = document.querySelector('.popup_type_avatar');
+const popupEditProfileAvatarForm = popupEditProfileAvatar.querySelector('.popup__form');
+const popupTypeAvatarInput = popupEditProfileAvatar.querySelector(".popup__input_type_url");
+
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const profileImage = document.querySelector('.profile__image');
 
 const closePopupButtons = document.querySelectorAll('.popup__close');
+
+//Фунция открытия попапа редактирования изображения профиля
+function openEditProfileAvatarPopup() {
+    clearValidation(popupEditProfileAvatarForm, validationConfig);
+    openPopup(popupEditProfileAvatar);
+}
 
 // Функция открытия попапа редактирования профиля
 function openEditProfilePopup() {
@@ -146,6 +156,8 @@ function getCards() {
 document.addEventListener('DOMContentLoaded', () => {
     getProfile();
     getCards();
+
+    profileImage.addEventListener("click", openEditProfileAvatarPopup);
     
     popupEditProfileButton.addEventListener('click', () => openEditProfilePopup());
 
