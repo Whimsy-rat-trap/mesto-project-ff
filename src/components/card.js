@@ -14,12 +14,15 @@ export function createCard(cardTemplate, cardData, onPopupImage, onLikeCard, onD
     cardElement.id = cardData.id;
     cardImage.alt = cardData.name;
     cardTitle.textContent = cardData.name;
+    if (cardData.hasLiked) {
+        likeButton.classList.toggle('card__like-button_is-active');
+    }
 
     // Добавляем обработчик клика на изображение
     cardImage.addEventListener('click', () => onPopupImage(cardData));
 
     // Используем переданную функцию для обработки клика на кнопку лайка
-    likeButton.addEventListener('click', () => onLikeCard(likeButton));
+    likeButton.addEventListener('click', () => onLikeCard(cardElement));
 
     deleteButton.addEventListener('click', () => onDeleteCard(cardElement));
 
@@ -41,6 +44,34 @@ export function removeCard(card) {
 }
 
 // Функция обработки лайка
-export function handleLikeButtonClick(likeButton) {
+export function handleLikeButtonClick(cardElement) {
+    const likeButton = cardElement.querySelector('.card__like-button');
+    const likeCounter = cardElement.querySelector('.card__like-counter');
+
+    if (likeButton.classList.contains('card__like-button_is-active')) {
+        fetch(`${config.baseUrl}/cards/likes/${cardElement.id}`, {
+            method: 'DELETE',
+            headers: {
+                authorization: config.headers.authorization,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then((card) => {
+            likeCounter.textContent = card.likes.length;
+        })
+    } else {
+        fetch(`${config.baseUrl}/cards/likes/${cardElement.id}`, {
+            method: 'PUT',
+            headers: {
+                authorization: config.headers.authorization,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then((card) => {
+            likeCounter.textContent = card.likes.length;
+        })
+    };
     likeButton.classList.toggle('card__like-button_is-active');
 }

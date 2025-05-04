@@ -35,6 +35,7 @@ const popupEditProfileAvatarForm = popupEditProfileAvatar.querySelector('.popup_
 const popupTypeAvatarInput = popupEditProfileAvatar.querySelector(".popup__input_type_url");
 
 const profileTitle = document.querySelector('.profile__title');
+const profileInfo = document.querySelector('.profile__info');
 const profileDescription = document.querySelector('.profile__description');
 const profileImage = document.querySelector('.profile__image');
 
@@ -140,7 +141,8 @@ function saveCard() {
         closePopup(popupNewCard);
         popupNewCardForm.reset();
     })
-}
+} 
+
 function getProfile() {
     fetch(`${config.baseUrl}/users/me`, {
         headers: {
@@ -152,6 +154,7 @@ function getProfile() {
         profileTitle.textContent = result.name;
         profileDescription.textContent = result.about;
         profileImage.style.backgroundImage = "url('" + result.avatar + "')";
+        profileInfo.id = result._id;
     });
 }
  
@@ -165,9 +168,8 @@ function getCards() {
         return res.json();
       })
     .then((cards) => {
-        console.log(cards);
         cards.forEach((card) => {
-            const newCardData = {name: card.name, link: card.link, id: card._id, likeCount: card.likes.length};
+            const newCardData = {name: card.name, link: card.link, id: card._id, likeCount: card.likes.length, hasLiked: card.likes.some((liker) => { return profileInfo.id == liker._id})};
             const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
             cardsContainer.append(cardElement);
         });
