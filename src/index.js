@@ -132,7 +132,7 @@ function saveCard() {
     })
     .then(res => res.json())
     .then((card) => {
-        const newCardData = {name: placeName, link: link, id: card._id, likeCount: 0};
+        const newCardData = {name: placeName, link: link, id: card._id, isMyCard: true, likeCount: 0, hasLiked: false};
     
         const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
         cardsContainer.prepend(cardElement);
@@ -168,8 +168,9 @@ function getCards() {
         return res.json();
       })
     .then((cards) => {
+        console.log(cards);
         cards.forEach((card) => {
-            const newCardData = {name: card.name, link: card.link, id: card._id, likeCount: card.likes.length, hasLiked: card.likes.some((liker) => { return profileInfo.id == liker._id})};
+            const newCardData = {name: card.name, link: card.link, id: card._id, likeCount: card.likes.length, isMyCard: profileInfo.id == card.owner._id, hasLiked: card.likes.some((liker) => { return profileInfo.id == liker._id})};
             const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
             cardsContainer.append(cardElement);
         });

@@ -17,6 +17,9 @@ export function createCard(cardTemplate, cardData, onPopupImage, onLikeCard, onD
     if (cardData.hasLiked) {
         likeButton.classList.toggle('card__like-button_is-active');
     }
+    if (!cardData.isMyCard) {
+        deleteButton.remove();
+    }
 
     // Добавляем обработчик клика на изображение
     cardImage.addEventListener('click', () => onPopupImage(cardData));
