@@ -16,6 +16,7 @@ const cardsContainer = document.querySelector('.places__list');
 
 const popupNewCard = document.querySelector('.popup_type_new-card');
 const popupNewCardButton = document.querySelector('.profile__add-button');
+const popupNewCardSaveButton = popupNewCard.querySelector('.popup__button');
 const popupNewCardForm = popupNewCard.querySelector('.popup__form');
 const popupNewCardFormInputLink  = popupNewCardForm.querySelector('.popup__input_type_url');
 const popupNewCardFormInputName = popupNewCardForm.querySelector('.popup__input_type_card-name');
@@ -26,11 +27,13 @@ const popupImageCaption = popupImage.querySelector(".popup__caption");
 
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const popupEditProfileButton = document.querySelector('.profile__edit-button');
+const popupEditProfileSaveButton = popupEditProfile.querySelector('.popup__button');
 const popupEditProfileForm = popupEditProfile.querySelector('.popup__form');
 const popupEditProfileFormInputName = popupEditProfile.querySelector('.popup__input_type_name');
 const popupEditProfileFormInputDescription = popupEditProfile.querySelector('.popup__input_type_description');
 
 const popupEditProfileAvatar = document.querySelector('.popup_type_avatar');
+const popupEditProfileAvatarSaveButton = popupEditProfileAvatar.querySelector('.popup__button');
 const popupEditProfileAvatarForm = popupEditProfileAvatar.querySelector('.popup__form');
 const popupTypeAvatarInput = popupEditProfileAvatar.querySelector(".popup__input_type_url");
 
@@ -73,6 +76,7 @@ function openModalForImage(cardData) {
 
 // Функция изменения изображения профиля
 function saveProfileImage() {
+    popupEditProfileAvatarSaveButton.textContent = "Сохранение...";
     const newAvatarUrl = popupTypeAvatarInput.value; // Получаем новый URL изображения
 
     fetch(`${config.baseUrl}/users/me/avatar`, {
@@ -90,10 +94,12 @@ function saveProfileImage() {
         profileImage.style.src = `url(${data.avatar})`; // Обновляем изображение профиля
         closePopup(popupEditProfileAvatar);
         popupEditProfileAvatarForm.reset();
+        popupEditProfileAvatarSaveButton.textContent = "Сохранить";
     })
 }
 
 function saveProfile() {
+    popupEditProfileSaveButton.textContent = "Сохранение...";
     fetch(`${config.baseUrl}/users/me`, {
         method: 'PATCH',
         headers: {
@@ -112,10 +118,12 @@ function saveProfile() {
         // Закрываем попап
         closePopup(popupEditProfile);
         popupEditProfileForm.reset();
+        popupEditProfileSaveButton.textContent = "Сохранить";
     })
 }
 
 function saveCard() {
+    popupNewCardSaveButton.textContent = "Сохранение...";
     const placeName = popupNewCardFormInputName.value;
     const link = popupNewCardFormInputLink .value;
 
@@ -140,6 +148,7 @@ function saveCard() {
         // Закрываем попап
         closePopup(popupNewCard);
         popupNewCardForm.reset();
+        popupNewCardSaveButton.textContent = "Сохранить";
     })
 } 
 
