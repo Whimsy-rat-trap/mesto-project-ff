@@ -131,7 +131,7 @@ function saveCard() {
     })
     .then(res => res.json())
     .then((card) => {
-        const newCardData = {name: placeName, link: link, id: card._id};
+        const newCardData = {name: placeName, link: link, id: card._id, likeCount: 0};
     
         const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
         cardsContainer.prepend(cardElement);
@@ -167,7 +167,7 @@ function getCards() {
     .then((cards) => {
         console.log(cards);
         cards.forEach((card) => {
-            const newCardData = {name: card.name, link: card.link, id: card._id};
+            const newCardData = {name: card.name, link: card.link, id: card._id, likeCount: card.likes.length};
             const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
             cardsContainer.append(cardElement);
         });

@@ -7,7 +7,9 @@ export function createCard(cardTemplate, cardData, onPopupImage, onLikeCard, onD
     const cardTitle = cardElement.querySelector('.card__title');
     const deleteButton = cardElement.querySelector('.card__delete-button');
     const likeButton = cardElement.querySelector('.card__like-button');
+    const likeCounter = cardElement.querySelector('.card__like-counter');
 
+    likeCounter.textContent = cardData.likeCount;
     cardImage.src = cardData.link;
     cardElement.id = cardData.id;
     cardImage.alt = cardData.name;
