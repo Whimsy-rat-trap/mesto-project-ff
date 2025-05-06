@@ -25,6 +25,9 @@ const popupImage = document.querySelector('.popup_type_image');
 const popupImageElement = popupImage.querySelector(".popup__image");
 const popupImageCaption = popupImage.querySelector(".popup__caption");
 
+const deletePopup = document.querySelector('.popup_type_confirm');
+const deletePopupConfirmButton = deletePopup.querySelector('.popup__button');
+
 const popupEditProfile = document.querySelector('.popup_type_edit');
 const popupEditProfileButton = document.querySelector('.profile__edit-button');
 const popupEditProfileSaveButton = popupEditProfile.querySelector('.popup__button');
@@ -43,6 +46,18 @@ const profileDescription = document.querySelector('.profile__description');
 const profileImage = document.querySelector('.profile__image');
 
 const closePopupButtons = document.querySelectorAll('.popup__close');
+
+function openDeletePopupConfirmButton(card) {
+    removeCard(card);
+    closePopup(deletePopup);
+}
+
+function openDeletePopup(card) {
+    deletePopupConfirmButton.addEventListener('click', () => {
+        openDeletePopupConfirmButton(card);
+    });
+    openPopup(deletePopup);
+}
 
 //Фунция открытия попапа редактирования изображения профиля
 function openEditProfileAvatarPopup() {
@@ -142,7 +157,7 @@ function saveCard() {
     .then((card) => {
         const newCardData = {name: placeName, link: link, id: card._id, isMyCard: true, likeCount: 0, hasLiked: false};
     
-        const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
+        const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, openDeletePopup);
         cardsContainer.prepend(cardElement);
     
         // Закрываем попап
@@ -180,7 +195,7 @@ function getCards() {
         console.log(cards);
         cards.forEach((card) => {
             const newCardData = {name: card.name, link: card.link, id: card._id, likeCount: card.likes.length, isMyCard: profileInfo.id == card.owner._id, hasLiked: card.likes.some((liker) => { return profileInfo.id == liker._id})};
-            const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, removeCard);
+            const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, openDeletePopup);
             cardsContainer.append(cardElement);
         });
     })
@@ -204,6 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    
 
     popupNewCardButton.addEventListener('click', () => {
         popupNewCardForm.reset();
