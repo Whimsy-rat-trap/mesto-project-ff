@@ -104,7 +104,7 @@ function saveProfileImage() {
 
 function saveProfile() {
     popupEditProfileSaveButton.textContent = "Сохранение...";
-    fetchSaveProfile(popupEditProfileFormInputName, popupEditProfileFormInputDescription)
+    fetchSaveProfile(popupEditProfileFormInputName.value, popupEditProfileFormInputDescription.value)
     .then(() => {
         profileTitle.textContent = popupEditProfileFormInputName.value;
         profileDescription.textContent = popupEditProfileFormInputDescription.value;
@@ -121,7 +121,7 @@ function saveCard() {
     const placeName = popupNewCardFormInputName.value;
     const link = popupNewCardFormInputLink .value;
 
-    fetchSaveCard(popupNewCardFormInputName, popupNewCardFormInputLink)
+    fetchSaveCard(placeName, link)
     .then((card) => {
         const newCardData = {name: placeName, link: link, id: card._id, isMyCard: true, likeCount: 0, hasLiked: false};
     

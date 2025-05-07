@@ -85,7 +85,7 @@ export const fetchSaveProfileImage = (newAvatarUrl) => {
   });
 }
 
-export const fetchSaveProfile = (popupEditProfileFormInputName, popupEditProfileFormInputDescription) => {
+export const fetchSaveProfile = (name, about) => {
   return fetch(`${config.baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
@@ -93,8 +93,8 @@ export const fetchSaveProfile = (popupEditProfileFormInputName, popupEditProfile
           'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: popupEditProfileFormInputName.value,
-        about: popupEditProfileFormInputDescription.value
+        name: name,
+        about: about
       })
   })
   .then(res => {
@@ -108,7 +108,7 @@ export const fetchSaveProfile = (popupEditProfileFormInputName, popupEditProfile
   });
 }
 
-export const fetchSaveCard = (popupNewCardFormInputName, popupNewCardFormInputLink) => {
+export const fetchSaveCard = (name, link) => {
   return fetch(`${config.baseUrl}/cards`, {
       method: 'POST',
       headers: {
@@ -116,8 +116,8 @@ export const fetchSaveCard = (popupNewCardFormInputName, popupNewCardFormInputLi
           'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: popupNewCardFormInputName.value,
-        link: popupNewCardFormInputLink.value
+        name: name,
+        link: link
       })
   })
   .then(res => {
