@@ -8,7 +8,7 @@ import {handleLikeButtonClick, removeCard, createCard} from './components/card.j
 import { validationConfig } from "./components/validationConfig.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
 
-import { config } from "./components/api.js";
+import { config, fetchSaveProfileImage, fetchSaveProfile, fetchSaveCard, fetchGetProfile, fetchGetCards } from "./components/api.js";
 
 const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
 
@@ -94,17 +94,7 @@ function saveProfileImage() {
     popupEditProfileAvatarSaveButton.textContent = "Сохранение...";
     const newAvatarUrl = popupTypeAvatarInput.value; // Получаем новый URL изображения
 
-    fetch(`${config.baseUrl}/users/me/avatar`, {
-        method: 'PATCH',
-        headers: {
-            authorization: config.headers.authorization,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            avatar: newAvatarUrl
-        })
-    })
-    .then(res => res.json())
+    fetchSaveProfileImage(newAvatarUrl)
     .then(data => {
         profileImage.style.src = `url(${data.avatar})`; // Обновляем изображение профиля
         closePopup(popupEditProfileAvatar);
@@ -115,17 +105,7 @@ function saveProfileImage() {
 
 function saveProfile() {
     popupEditProfileSaveButton.textContent = "Сохранение...";
-    fetch(`${config.baseUrl}/users/me`, {
-        method: 'PATCH',
-        headers: {
-            authorization: config.headers.authorization,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: popupEditProfileFormInputName.value,
-          about: popupEditProfileFormInputDescription.value
-        })
-    })
+    fetchSaveProfile(popupEditProfileFormInputName, popupEditProfileFormInputDescription)
     .then(() => {
         profileTitle.textContent = popupEditProfileFormInputName.value;
         profileDescription.textContent = popupEditProfileFormInputDescription.value;
@@ -142,18 +122,7 @@ function saveCard() {
     const placeName = popupNewCardFormInputName.value;
     const link = popupNewCardFormInputLink .value;
 
-    fetch(`${config.baseUrl}/cards`, {
-        method: 'POST',
-        headers: {
-            authorization: config.headers.authorization,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: popupNewCardFormInputName.value,
-          link: popupNewCardFormInputLink.value
-        })
-    })
-    .then(res => res.json())
+    fetchSaveCard(popupNewCardFormInputName, popupNewCardFormInputLink)
     .then((card) => {
         const newCardData = {name: placeName, link: link, id: card._id, isMyCard: true, likeCount: 0, hasLiked: false};
     
@@ -168,12 +137,7 @@ function saveCard() {
 } 
 
 function getProfile() {
-    fetch(`${config.baseUrl}/users/me`, {
-        headers: {
-          authorization: config.headers.authorization
-        }
-    })
-    .then(res => res.json())
+    fetchGetProfile()
     .then((result) => {
         profileTitle.textContent = result.name;
         profileDescription.textContent = result.about;
@@ -183,14 +147,7 @@ function getProfile() {
 }
  
 function getCards() {
-    fetch(`${config.baseUrl}/cards`, {
-        headers: {
-          authorization: config.headers.authorization
-        }
-    })
-    .then(res => {
-        return res.json();
-      })
+    fetchGetCards()
     .then((cards) => {
         console.log(cards);
         cards.forEach((card) => {

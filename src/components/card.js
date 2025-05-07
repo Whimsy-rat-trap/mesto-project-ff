@@ -1,4 +1,4 @@
-import { config } from "./api.js";
+import { fetchRemoveCard, fetchDeleteLike, fetchAddLike } from "./api.js";
 // Функция создания карточки
 export function createCard(cardTemplate, cardData, onPopupImage, onLikeCard, onDeleteCard) {
     const cardElement = cardTemplate.cloneNode(true);
@@ -34,15 +34,9 @@ export function createCard(cardTemplate, cardData, onPopupImage, onLikeCard, onD
 
 // Функция удаления карточки
 export function removeCard(card) {
-    fetch(`${config.baseUrl}/cards/${card.id}`, {
-            method: 'DELETE',
-            headers: {
-                authorization: config.headers.authorization,
-                'Content-Type': 'application/json'
-            }
-    })
     if (card) {
-        card.remove();
+        fetchRemoveCard(card.id)
+        .then (() => card.remove());
     }
 }
 
@@ -52,26 +46,12 @@ export function handleLikeButtonClick(cardElement) {
     const likeCounter = cardElement.querySelector('.card__like-counter');
 
     if (likeButton.classList.contains('card__like-button_is-active')) {
-        fetch(`${config.baseUrl}/cards/likes/${cardElement.id}`, {
-            method: 'DELETE',
-            headers: {
-                authorization: config.headers.authorization,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
+        fetchDeleteLike(cardElement.id)
         .then((card) => {
             likeCounter.textContent = card.likes.length;
         })
     } else {
-        fetch(`${config.baseUrl}/cards/likes/${cardElement.id}`, {
-            method: 'PUT',
-            headers: {
-                authorization: config.headers.authorization,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
+        fetchAddLike(cardElement.id)
         .then((card) => {
             likeCounter.textContent = card.likes.length;
         })
