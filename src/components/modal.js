@@ -11,7 +11,7 @@ function handleEscClose(e) {
 // Открытие попапа для новой карточки
 export function openPopup(popup) {
     popup.classList.add('popup_is-opened');
-    document.addEventListener('keydown', handleEscClose); // Добавляем обработчик
+    document.addEventListener('keydown', handleEscClose);
 }
 
 // Закрытие попапа (обновленная функция)

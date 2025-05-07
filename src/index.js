@@ -2,13 +2,12 @@ import './index.css'
 
 import {openPopup, closePopup} from './components/modal.js';
 
-import {initialCards} from './components/cards.js';
-import {handleLikeButtonClick, removeCard, createCard} from './components/card.js';
+import { handleLikeButtonClick, removeCard, createCard} from './components/card.js';
 
 import { validationConfig } from "./components/validationConfig.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
 
-import { config, fetchSaveProfileImage, fetchSaveProfile, fetchSaveCard, fetchGetProfile, fetchGetCards } from "./components/api.js";
+import { fetchSaveProfileImage, fetchSaveProfile, fetchSaveCard, fetchGetProfile, fetchGetCards } from "./components/api.js";
 
 const cardTemplate = document.querySelector('#card-template').content.querySelector('.card');
 
