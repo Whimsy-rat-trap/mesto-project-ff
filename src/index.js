@@ -148,7 +148,6 @@ function getProfile() {
 function getCards() {
     fetchGetCards()
     .then((cards) => {
-        console.log(cards);
         cards.forEach((card) => {
             const newCardData = {name: card.name, link: card.link, id: card._id, likeCount: card.likes.length, isMyCard: profileInfo.id == card.owner._id, hasLiked: card.likes.some((liker) => { return profileInfo.id == liker._id})};
             const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, openDeletePopup);
