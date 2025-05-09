@@ -36,7 +36,10 @@ export function createCard(cardTemplate, cardData, onPopupImage, onLikeCard, onD
 export function removeCard(card) {
     if (card) {
         fetchRemoveCard(card.id)
-        .then (() => card.remove());
+        .then (() => card.remove())
+        .catch((err) => {
+            console.log(err)
+        });
     }
 }
 
@@ -49,12 +52,16 @@ export function handleLikeButtonClick(cardElement) {
         fetchDeleteLike(cardElement.id)
         .then((card) => {
             likeCounter.textContent = card.likes.length;
+            likeButton.classList.toggle('card__like-button_is-active');
         })
     } else {
         fetchAddLike(cardElement.id)
         .then((card) => {
-            likeCounter.textContent = card.likes.length;
+            likeCounter.textContent = card.likes.length
+            likeButton.classList.toggle('card__like-button_is-active');
         })
+        .catch((err) => {
+            console.log(err);
+        });
     };
-    likeButton.classList.toggle('card__like-button_is-active');
 }

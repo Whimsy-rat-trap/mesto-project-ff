@@ -46,15 +46,25 @@ const profileImage = document.querySelector('.profile__image');
 
 const closePopupButtons = document.querySelectorAll('.popup__close');
 
-function openDeletePopupConfirmButton(card) {
-    removeCard(card);
-    closePopup(deletePopup);
+const deletePopupState = {
+    currentCardToDelete: null
+};
+
+function openDeletePopupConfirmButton() {
+    if (deletePopupState.currentCardToDelete) {
+        removeCard(deletePopupState.currentCardToDelete);
+        closePopup(deletePopup);
+        deletePopupState.currentCardToDelete = null;
+    }
 }
 
 function openDeletePopup(card) {
-    deletePopupConfirmButton.addEventListener('click', () => {
-        openDeletePopupConfirmButton(card);
-    });
+    // Удаляем предыдущий обработчик если он есть
+    deletePopupConfirmButton.removeEventListener('click', openDeletePopupConfirmButton);
+
+    deletePopupState.currentCardToDelete = card;
+
+    deletePopupConfirmButton.addEventListener('click', openDeletePopupConfirmButton);
     openPopup(deletePopup);
 }
 
@@ -95,10 +105,15 @@ function saveProfileImage() {
 
     fetchSaveProfileImage(newAvatarUrl)
     .then(data => {
-        profileImage.style.src = `url(${data.avatar})`; // Обновляем изображение профиля
+        profileImage.style.backgroundImage = `url(${data.avatar})`; // Обновляем изображение профиля
         closePopup(popupEditProfileAvatar);
         popupEditProfileAvatarForm.reset();
-        popupEditProfileAvatarSaveButton.textContent = "Сохранить";
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    .finally(() => {
+        popupNewCardSaveButton.textContent = "Сохранить"
     })
 }
 
@@ -112,7 +127,12 @@ function saveProfile() {
         // Закрываем попап
         closePopup(popupEditProfile);
         popupEditProfileForm.reset();
-        popupEditProfileSaveButton.textContent = "Сохранить";
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+    .finally(() => {
+        popupNewCardSaveButton.textContent = "Сохранить"
     })
 }
 
@@ -131,7 +151,12 @@ function saveCard() {
         // Закрываем попап
         closePopup(popupNewCard);
         popupNewCardForm.reset();
-        popupNewCardSaveButton.textContent = "Сохранить";
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+    .finally(() => {
+        popupNewCardSaveButton.textContent = "Сохранить"
     })
 } 
 
@@ -142,6 +167,9 @@ function getProfile() {
         profileDescription.textContent = result.about;
         profileImage.style.backgroundImage = "url('" + result.avatar + "')";
         profileInfo.id = result._id;
+    })
+    .catch((err) => {
+        console.log(err);
     });
 }
  
@@ -149,59 +177,65 @@ function getCards() {
     fetchGetCards()
     .then((cards) => {
         cards.forEach((card) => {
-            const newCardData = {name: card.name, link: card.link, id: card._id, likeCount: card.likes.length, isMyCard: profileInfo.id == card.owner._id, hasLiked: card.likes.some((liker) => { return profileInfo.id == liker._id})};
+            const newCardData = {name: card.name, link: card.link, id: card._id, likeCount: card.likes.length, isMyCard: profileInfo.id === card.owner._id, hasLiked: card.likes.some((liker) => { return profileInfo.id === liker._id})};
             const cardElement = createCard(cardTemplate, newCardData, openModalForImage, handleLikeButtonClick, openDeletePopup);
             cardsContainer.append(cardElement);
         });
     })
-    .catch(err => console.log(err));
+    .catch((err) => {
+        console.log(err);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    getProfile();
-    getCards();
-
-    profileImage.addEventListener("click", openEditProfileAvatarPopup);
-    popupEditProfileAvatarForm.addEventListener("submit", () => saveProfileImage());
-    
-    popupEditProfileButton.addEventListener('click', () => openEditProfilePopup());
-
-    document.querySelectorAll('.popup').forEach((popup) => {
-        popup.classList.add('popup_is-animated');
-        popup.addEventListener("click", (evt) => {
-            if (evt.target === popup) {
-                closePopup(popup)
-            }
+    Promise.all([getProfile(), getCards()])
+    .then(() => {
+        profileImage.addEventListener("click", openEditProfileAvatarPopup);
+        popupEditProfileAvatarForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            saveProfileImage();
         });
-    });
 
-    
+        popupEditProfileButton.addEventListener('click', () => openEditProfilePopup());
 
-    popupNewCardButton.addEventListener('click', () => {
-        popupNewCardForm.reset();
-        clearValidation(popupNewCardForm, validationConfig);
-        openPopup(popupNewCard);
-    });
-
-    // Обработчик события для закрытия попапа
-    closePopupButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const popup = button.closest('.popup');
-            closePopup(popup);
+        document.querySelectorAll('.popup').forEach((popup) => {
+            popup.classList.add('popup_is-animated');
+            popup.addEventListener("click", (evt) => {
+                if (evt.target === popup) {
+                    closePopup(popup)
+                }
+            });
         });
-    });
 
-    // Обработчик события для отправки формы новой карточки
-    popupNewCardForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        saveCard();
-    });
+        popupNewCardButton.addEventListener('click', () => {
+            popupNewCardForm.reset();
+            clearValidation(popupNewCardForm, validationConfig);
+            openPopup(popupNewCard);
+        });
 
-    // Обработчик события для отправки формы редактирования
-    popupEditProfileForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        saveProfile();
-    });
+        // Обработчик события для закрытия попапа
+        closePopupButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const popup = button.closest('.popup');
+                closePopup(popup);
+            });
+        });
 
-    enableValidation(validationConfig);
+        // Обработчик события для отправки формы новой карточки
+        popupNewCardForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveCard();
+        });
+
+        // Обработчик события для отправки формы редактирования
+        popupEditProfileForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveProfile();
+        });
+
+        enableValidation(validationConfig);
+    })
+    .catch(err => {
+        console.log(err);
+    });
 });

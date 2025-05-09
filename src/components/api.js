@@ -1,3 +1,4 @@
+import {checkResponse} from '../utils/utils.js';
 //КОНФИГ ЗАПРОСА
 const config = {
     baseUrl: "https://nomoreparties.co/v1/wff-cohort-38",
@@ -14,15 +15,7 @@ export const fetchRemoveCard = (id) => {
           'Content-Type': 'application/json'
       }
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(checkResponse)
 } 
 
 export const fetchDeleteLike = (id) => {
@@ -33,12 +26,7 @@ export const fetchDeleteLike = (id) => {
       'Content-Type': 'application/json'
     }
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
+  .then(checkResponse)
   .catch((err) => {
     console.log(err);
   });
@@ -52,15 +40,7 @@ export const fetchAddLike = (id) => {
         'Content-Type': 'application/json'
       }
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(checkResponse)
 }
 
 export const fetchSaveProfileImage = (newAvatarUrl) => {
@@ -74,15 +54,7 @@ export const fetchSaveProfileImage = (newAvatarUrl) => {
           avatar: newAvatarUrl
       })
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(checkResponse)
 }
 
 export const fetchSaveProfile = (name, about) => {
@@ -97,15 +69,7 @@ export const fetchSaveProfile = (name, about) => {
         about: about
       })
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(checkResponse)
 }
 
 export const fetchSaveCard = (name, link) => {
@@ -120,15 +84,7 @@ export const fetchSaveCard = (name, link) => {
         link: link
       })
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(checkResponse)
 }
 
 export const fetchGetProfile = () => {
@@ -137,15 +93,7 @@ export const fetchGetProfile = () => {
       authorization: config.headers.authorization
     }
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(checkResponse)
 }
 
 export const fetchGetCards = () => {
@@ -154,13 +102,5 @@ export const fetchGetCards = () => {
       authorization: config.headers.authorization
     }
   })
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .then(checkResponse)
 }
