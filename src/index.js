@@ -59,12 +59,7 @@ function openDeletePopupConfirmButton() {
 }
 
 function openDeletePopup(card) {
-    // Удаляем предыдущий обработчик если он есть
-    deletePopupConfirmButton.removeEventListener('click', openDeletePopupConfirmButton);
-
     deletePopupState.currentCardToDelete = card;
-
-    deletePopupConfirmButton.addEventListener('click', openDeletePopupConfirmButton);
     openPopup(deletePopup);
 }
 
@@ -161,7 +156,7 @@ function saveCard() {
 } 
 
 function getProfile() {
-    fetchGetProfile()
+    return fetchGetProfile()
     .then((result) => {
         profileTitle.textContent = result.name;
         profileDescription.textContent = result.about;
@@ -174,7 +169,7 @@ function getProfile() {
 }
  
 function getCards() {
-    fetchGetCards()
+    return fetchGetCards()
     .then((cards) => {
         cards.forEach((card) => {
             const newCardData = {name: card.name, link: card.link, id: card._id, likeCount: card.likes.length, isMyCard: profileInfo.id === card.owner._id, hasLiked: card.likes.some((liker) => { return profileInfo.id === liker._id})};
@@ -190,6 +185,7 @@ function getCards() {
 document.addEventListener('DOMContentLoaded', () => {
     Promise.all([getProfile(), getCards()])
     .then(() => {
+        deletePopupConfirmButton.addEventListener('click', openDeletePopupConfirmButton);
         profileImage.addEventListener("click", openEditProfileAvatarPopup);
         popupEditProfileAvatarForm.addEventListener("submit", (e) => {
             e.preventDefault();

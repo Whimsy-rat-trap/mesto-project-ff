@@ -63,5 +63,5 @@ export function handleLikeButtonClick(cardElement) {
         .catch((err) => {
             console.log(err);
         });
-    };
+    }
 }
