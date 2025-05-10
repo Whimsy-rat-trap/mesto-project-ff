@@ -53,6 +53,9 @@ export function handleLikeButtonClick(cardElement) {
             likeCounter.textContent = card.likes.length;
             likeButton.classList.toggle('card__like-button_is-active');
         })
+        .catch((err) => {
+            console.log(err);
+        });
     } else {
         fetchAddLike(cardElement.id)
         .then((card) => {
