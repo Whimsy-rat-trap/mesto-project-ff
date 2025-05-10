@@ -53,15 +53,12 @@ const deletePopupState = {
 function openDeletePopupConfirmButton() {
     if (deletePopupState.currentCardToDelete) {
         removeCard(deletePopupState.currentCardToDelete)
-        .then(response => {
-            // Проверяем работает ли ответ от сервера
-            if (response.ok) {
-                // Закрываем попап тольуко если сервер ответил
-                closePopup(deletePopup);
-                deletePopupState.currentCardToDelete = null;
-            } else {
-                console.error('Ошибка при удалении карточки:', response.statusText);
-            }
+        .then(() => {
+            closePopup(deletePopup);
+            deletePopupState.currentCardToDelete = null;
+        })
+        .catch((err) => {
+            console.log(err);
         })
     }
 }

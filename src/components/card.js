@@ -38,12 +38,7 @@ export function removeCard(card) {
         return fetchRemoveCard(card.id)
         .then (() => {
             card.remove()
-            return Response;
         })
-        .catch((err) => {
-            console.log(err)
-            throw err; //Кидаем ошибку дальше
-        });
     }
 }
 
