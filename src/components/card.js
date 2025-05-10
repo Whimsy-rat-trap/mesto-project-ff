@@ -35,10 +35,14 @@ export function createCard(cardTemplate, cardData, onPopupImage, onLikeCard, onD
 // Функция удаления карточки
 export function removeCard(card) {
     if (card) {
-        fetchRemoveCard(card.id)
-        .then (() => card.remove())
+        return fetchRemoveCard(card.id)
+        .then (() => {
+            card.remove()
+            return Response;
+        })
         .catch((err) => {
             console.log(err)
+            throw err; //Кидаем ошибку дальше
         });
     }
 }

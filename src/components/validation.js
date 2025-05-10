@@ -45,7 +45,7 @@ const toggleButtonState = (inputList, buttonElement, validationConfig) => {
     } else {
         buttonElement.disabled = false;
         buttonElement.classList.remove(validationConfig.inactiveButtonClass);
-    };
+    }
 };
 
 //Делаем так чтобы обработчик добавился ко всем полям
